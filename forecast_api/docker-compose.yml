@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    container_name: forecast_api
+    command: gunicorn forecast_api.wsgi:application --bind 0.0.0.0:8000 --workers 3 --timeout 120
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      DEBUG: "True"
+      ALLOWED_HOSTS: "127.0.0.1,localhost"
+    restart: unless-stopped
